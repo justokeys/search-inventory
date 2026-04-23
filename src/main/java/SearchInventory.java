@@ -1,5 +1,6 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Scanner;
 
 public class SearchInventory {
@@ -72,6 +73,7 @@ public class SearchInventory {
                 inventory.add(allProducts);
 
                 String newFile =  String.format("%d|%s|%.2f\n", allProducts.getId(),allProducts.getName(), allProducts.getPrice());
+//inventory.sort(Comparator.comparing(Products::getId));
 
 
             }
@@ -87,7 +89,15 @@ public class SearchInventory {
 
         // adding method to for option 1 in the menu List all Products
     public static void listAllProducts(){
+
+       // boolean apprunning = true;
+
+
+        inventory.sort(Comparator.comparing(Products::getName));
+
         for (Products currentProduct : inventory) {
+
+
 
             // Keeping the same csv format for listing the products
             System.out.printf("ID: %d | %s | $%.2f \n", currentProduct.getId(), currentProduct.getName(), currentProduct.getPrice());
@@ -143,67 +153,24 @@ public class SearchInventory {
             switch (userInput) {
 
                 case 1:
-                    for (int i = 0; i < inventory.size(); i++) {
-
-                        Products price = inventory.get(i);
-
-
-                        if (price.getPrice() <= 5.00) {
-                            System.out.printf("ID: %d | %s | $%.2f \n", price.getId(), price.getName(), price.getPrice());
-                        }
-
-                    }
+                    displayProductrange(0,5.00);
                     break;
                 case 2:
-                    for (int i = 0; i < inventory.size(); i++) {
+                    displayProductrange(5.00,20.00);
 
-                        Products price = inventory.get(i);
-
-
-                        if (price.getPrice() >= 5.00 && price.getPrice() <= 20.00) {
-                            System.out.printf("ID: %d | %s | $%.2f \n", price.getId(), price.getName(), price.getPrice());
-                        }
-
-                    }
                     break;
                 case 3:
-                    for (int i = 0; i < inventory.size(); i++) {
-
-                        Products price = inventory.get(i);
-
-                        if (price.getPrice() >= 20.00 && price.getPrice() <= 50.00) {
-
-                            System.out.printf("ID: %d | %s | $%.2f \n", price.getId(), price.getName(), price.getPrice());
-                        }
-
-
-                    }
+                   displayProductrange(20.00,50.00);
                     break;
                 case 4:
-                    for (int i = 0; i < inventory.size(); i++) {
-
-                        Products price = inventory.get(i);
-
-                        if (price.getPrice() >= 50.00 && price.getPrice() <= 100.00) {
-
-                            System.out.printf("ID: %d | %s | $%.2f \n", price.getId(), price.getName(), price.getPrice());
-                        }
-
-
-                    }
+                    displayProductrange(50.00,100.00);
                     break;
                 case 5:
-                    for (int i = 0; i < inventory.size(); i++) {
-
-                        Products price = inventory.get(i);
-
-                        if (price.getPrice() > 100.00) {
-
-                            System.out.printf("ID: %d | %s | $%.2f \n", price.getId(), price.getName(), price.getPrice());
-                        }
+                        displayProductrange(100);
 
 
-                    }
+
+
                     break;
 
 
@@ -228,8 +195,6 @@ public class SearchInventory {
                 System.out.println("Exiting and saving your file...");
                 break;
             }
-
-
 
 
             int newID = Integer.parseInt(userInput);
@@ -261,6 +226,55 @@ public class SearchInventory {
 
 
         }
+
+
+    }
+
+    public static void displayProductrange(double min, double max){
+        for (int i = 0; i < inventory.size(); i++) {
+
+            Products price = inventory.get(i);
+
+
+
+                if (price.getPrice() >= min  && price.getPrice() <= max) {
+                    System.out.printf("ID: %d | %s | $%.2f \n", price.getId(), price.getName(), price.getPrice());
+                }
+
+
+
+
+
+
+        }
+
+
+
+
+
+    }
+
+
+    public static void displayProductrange(double min){
+        for (int i = 0; i < inventory.size(); i++) {
+
+            Products price = inventory.get(i);
+
+                if (price.getPrice() >= min ) {
+                    System.out.printf("ID: %d | %s | $%.2f \n", price.getId(), price.getName(), price.getPrice());
+                }
+
+
+            }
+
+
+
+
+
+        }
+
+
+
 
 
     }
