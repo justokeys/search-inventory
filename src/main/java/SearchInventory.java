@@ -26,7 +26,8 @@ public class SearchInventory {
             Enter command:\s""" );
 
             int menuChoice = thescanner.nextInt();
-
+            thescanner.nextLine();
+            // Switch menu that call different methods
             switch (menuChoice){
                 case 1:
                     listAllProducts();
@@ -45,14 +46,6 @@ public class SearchInventory {
 
             }
         }
-
-
-
-
-
-
-
-
 
 
     }
@@ -94,15 +87,195 @@ public class SearchInventory {
 
         // adding method to for option 1 in the menu List all Products
     public static void listAllProducts(){
-        for(int i = 0; i < inventory.size(); i++){
+        for (Products currentProduct : inventory) {
 
-            Products currentProduct = inventory.get(i);
-
-            // Keeping the same csv format for listing the productc
+            // Keeping the same csv format for listing the products
             System.out.printf("ID: %d | %s | $%.2f \n", currentProduct.getId(), currentProduct.getName(), currentProduct.getPrice());
 
         }
 
 
     }
+   // method to look up products By id from user input
+    public static void lookupById(){
+
+
+        System.out.println("Enter product ID");
+
+        int pID = thescanner.nextInt();
+
+
+        for (Products currentProduct : inventory) {
+
+            if (pID == currentProduct.getId()) {
+
+                System.out.printf("ID: %d | %s | $%.2f \n", currentProduct.getId(), currentProduct.getName(), currentProduct.getPrice());
+                break;
+            }
+
+
+
+        }
+
+
+
+
+    }
+
+// find by price range with sub switch menu
+    public static void findByPriceRange(){
+// ask user input
+        System.out.println(
+                """ 
+                Enter price range:
+                1- 0-5.00
+                2- 5.00 - 20.00
+                3- 20.00 - 50.00
+                4- 50.00 - 100.00
+                5- 100.00+
+                Enter command:\s""" );
+        boolean appRunning = true;
+
+
+
+
+            int userInput = thescanner.nextInt();// switch statement with while loop to return to main menu
+            switch (userInput) {
+
+                case 1:
+                    for (int i = 0; i < inventory.size(); i++) {
+
+                        Products price = inventory.get(i);
+
+
+                        if (price.getPrice() <= 5.00) {
+                            System.out.printf("ID: %d | %s | $%.2f \n", price.getId(), price.getName(), price.getPrice());
+                        }
+
+                    }
+                    break;
+                case 2:
+                    for (int i = 0; i < inventory.size(); i++) {
+
+                        Products price = inventory.get(i);
+
+
+                        if (price.getPrice() >= 5.00 && price.getPrice() <= 20.00) {
+                            System.out.printf("ID: %d | %s | $%.2f \n", price.getId(), price.getName(), price.getPrice());
+                        }
+
+                    }
+                    break;
+                case 3:
+                    for (int i = 0; i < inventory.size(); i++) {
+
+                        Products price = inventory.get(i);
+
+                        if (price.getPrice() >= 20.00 && price.getPrice() <= 50.00) {
+
+                            System.out.printf("ID: %d | %s | $%.2f \n", price.getId(), price.getName(), price.getPrice());
+                        }
+
+
+                    }
+                    break;
+                case 4:
+                    for (int i = 0; i < inventory.size(); i++) {
+
+                        Products price = inventory.get(i);
+
+                        if (price.getPrice() >= 50.00 && price.getPrice() <= 100.00) {
+
+                            System.out.printf("ID: %d | %s | $%.2f \n", price.getId(), price.getName(), price.getPrice());
+                        }
+
+
+                    }
+                    break;
+                case 5:
+                    for (int i = 0; i < inventory.size(); i++) {
+
+                        Products price = inventory.get(i);
+
+                        if (price.getPrice() > 100.00) {
+
+                            System.out.printf("ID: %d | %s | $%.2f \n", price.getId(), price.getName(), price.getPrice());
+                        }
+
+
+                    }
+                    break;
+
+
+            }
+
+
+
+
+
 }
+// take user input and adds to csv file
+    public static void addNewProduct(){
+        boolean appRunning = true;
+        while (appRunning) {
+
+            System.out.println("---Enter Product Data below To Exit Press ( X )---");
+            System.out.println();
+            System.out.print("Enter Product ID: ");
+
+            String userInput = thescanner.nextLine();
+            if( userInput.equalsIgnoreCase("X")){
+                System.out.println("Exiting and saving your file...");
+                break;
+            }
+
+
+
+
+            int newID = Integer.parseInt(userInput);
+
+
+            System.out.print("Enter Product Name: ");
+            String newProductName = thescanner.nextLine();
+            System.out.print("Enter Product Price: ");
+            double newPrice = thescanner.nextDouble();
+            thescanner.nextLine();
+
+            try {
+                FileWriter fileWriter = new FileWriter("src/main/resources/inventory.csv", true);
+                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+                Products newProduct = new Products(newID,newProductName,newPrice);
+                inventory.add(newProduct);
+                String newFile =  String.format("%d|%s|%.2f", newProduct.getId(), newProduct.getName(), newProduct.getPrice());
+                bufferedWriter.write(newFile);
+                bufferedWriter.newLine();
+                bufferedWriter.close();
+
+
+
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+
+        }
+
+
+    }
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
